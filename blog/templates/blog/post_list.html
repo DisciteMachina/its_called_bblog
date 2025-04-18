@@ -1,0 +1,26 @@
+<!-- blog/templates/blog/post_list.html -->
+
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog</title>
+</head>
+<body>
+    <h1>Blog</h1>
+
+    <!-- Link to create a new post -->
+    <a href="{% url 'create_post' %}">Create a new blog post</a>
+
+    <ul>
+        {% for post in posts %}
+            <li><a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a></li>
+        {% empty %}
+            <p>No posts available.</p>
+        {% endfor %}
+    </ul>
+</body>
+</html>
