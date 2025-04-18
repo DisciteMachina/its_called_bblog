@@ -6,4 +6,5 @@ from .models import Post
 class PostForm(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ['title', 'content', 'author']
+        fields = ['title', 'content', 'published_date']  # Include the fields for your Post model
+        exclude = ['published_date']
