@@ -1,26 +1,59 @@
-<!-- blog/templates/blog/post_list.html -->
-
 {% load static %}
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'css/styles_temp.css' %}">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Blog</title>
 </head>
+
 <body>
-    <h1>Blog</h1>
+    <div class="container">
+        <header class="post-header">
+            <h1>Blog</h1>
+        </header>
 
-    <!-- Link to create a new post -->
-    <a href="{% url 'create_post' %}">Create a new blog post</a>
+        <main>
+            <div class="main-page">
+                <a href="{% url 'create_post' %}" class="button button-create">Create a new blog post</a>
+            </div>
 
-    <ul>
-        {% for post in posts %}
-            <li><a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a></li>
-        {% empty %}
-            <p>No posts available.</p>
-        {% endfor %}
-    </ul>
+            <div class="folder-structure">
+                <ul>
+                    {% for year, months in years_and_months.items %}
+                        <li>
+                            <div class="folder year" data-year="{{ year }}">
+                                <span class="arrow year-arrow">▶</span>{{ year }}
+                            </div>
+                            <ul class="month-list">
+                                {% for month in months %}
+                                    <li>
+                                        <div class="folder month" data-month="{{ month.month }}">
+                                            <span class="arrow month-arrow">▶</span>{{ month.month_name }}
+                                        </div>
+                                        <ul class="post-list">
+                                            {% for post in posts %}
+                                                {% if post.published_date.year == year and post.published_date.month == month.month %}
+                                                    <li>
+                                                        <a href="{% url 'post_detail' pk=post.pk %}" class = "post-link">
+                                                            {{ post.title }} - {{ post.published_date.day }} {{ post.published_date|date:"F Y" }}
+                                                        </a>
+                                                    </li>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </ul>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            
+        </main>
+    </div>
+    <script src="{% static 'js/folder_toggle.js' %}"></script>
 </body>
 </html>
